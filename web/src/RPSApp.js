@@ -10,6 +10,18 @@ export default class RPSApp extends React.Component {
         this.props.match.play('p1 throw placeholder', 'p2 throw placeholder', this)
     }
 
+    player1Wins() {
+        this.setState({result: 'P1 Wins!!'})
+    }
+
+    player2Wins() {
+        this.setState({result: 'P2 Wins!!'})
+    }
+
+    draw() {
+        this.setState({result: 'DRAW!'})
+    }
+
     invalidInput() {
         this.setState({result: 'INVALID!'})
     }
