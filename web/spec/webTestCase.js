@@ -15,7 +15,13 @@ describe('play form', function () {
 
     describe('when the play use case tells the UI that the input is invalid', () => {
         beforeEach(function () {
-            renderApp({play: (player1Throw, player2Throw, result) => result.invalidInput()})
+            let matchTestDouble =
+                {
+                    play: function (player1Throw, player2Throw, result) {
+                        return result.invalidInput()
+                    }
+                }
+            renderApp(matchTestDouble)
         })
 
         it('tells the user that their input is invalid', () => {
