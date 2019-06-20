@@ -1,27 +1,43 @@
 function Match() {
     this.playMatch = (player1Throw, player2Throw, result) => {
-        new PlayMatchRequest(player1Throw, player2Throw, result).process();
+        new PlayMatchRequest(player1Throw, player2Throw, result).process()
     }
 }
 
 function PlayMatchRequest(player1Throw, player2Throw, result) {
     this.process = () => {
-        if (!['rock', 'paper', 'scissors'].includes(player1Throw) ||
-            !['rock', 'paper', 'scissors'].includes(player2Throw)) {
-            result.invalid();
-        }
-        else if (player1Throw === player2Throw) {
-            result.draw();
-        }
-        else if (player1Throw === 'rock' && player2Throw === 'scissors' ||
-            player1Throw === 'scissors' && player2Throw === 'paper' ||
-            player1Throw === 'paper' && player2Throw === 'rock') {
-            result.player1Wins();
-
+        if (invalid(player1Throw) || invalid(player2Throw)) {
+            result.invalid()
+        } else if (draw()) {
+            result.draw()
+        } else if (player1WinsScenarios()) {
+            result.player1Wins()
         } else {
-            result.player2Wins();
+            result.player2Wins()
         }
     }
+
+    function draw() {
+        return player1Throw === player2Throw
+    }
+
+    function player1WinsScenarios() {
+        return player1Throw === THROW.ROCK && player2Throw === THROW.SCISSORS ||
+            player1Throw === THROW.SCISSORS && player2Throw === THROW.PAPER ||
+            player1Throw === THROW.PAPER && player2Throw === THROW.ROCK
+    }
+
+    function invalid(playerThrow) {
+        return VALID_THROWS.includes(playerThrow) === false
+    }
+
+    const THROW = {
+        ROCK: 'rock',
+        SCISSORS: 'scissors',
+        PAPER: 'paper'
+    }
+
+    const VALID_THROWS = [THROW.ROCK, THROW.SCISSORS, THROW.PAPER]
 }
 
 module.exports = {Match}
