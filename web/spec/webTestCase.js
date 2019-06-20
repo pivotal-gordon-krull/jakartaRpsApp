@@ -13,6 +13,7 @@ describe("play form", function () {
             }
 
             ReactDOM.render(<RPSApp requests={alwaysInvalidRequest} />, domFixture)
+
             expect(domFixture.innerText).not.toContain('INVALID!')
             document.querySelector('button').click()
             expect(domFixture.innerText).toContain('INVALID!')
