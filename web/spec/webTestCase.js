@@ -1,6 +1,7 @@
 import React from 'react'
 import * as ReactDOM from 'react-dom'
 import RPSApp from '../src/RPSApp'
+import ReactTestUtils from 'react-dom/test-utils'
 
 describe('play form', function () {
     let domFixture
@@ -18,7 +19,7 @@ describe('play form', function () {
             let matchTestDouble =
                 {
                     play: function (player1Throw, player2Throw, result) {
-                        return result.invalidInput()
+                        return result.invalid()
                     }
                 }
             renderApp(matchTestDouble)
@@ -80,6 +81,28 @@ describe('play form', function () {
             expect(page()).toContain('P2 Wins!!')
         })
     })
+
+    describe('submitting a game', function () {
+        it('sends the users input to the rps play use case', function () {
+            let playSpy = jasmine.createSpy('play')
+
+            renderApp({play: playSpy})
+
+            enterTextIntoInput('p1Throw', 'foo')
+            enterTextIntoInput('p2Throw', 'bar')
+
+            submitForm()
+
+            expect(playSpy).toHaveBeenCalledWith('foo', 'bar', jasmine.any(Object))
+        })
+    })
+
+    function enterTextIntoInput(inputName, inputValue) {
+        let throwInput = document.querySelector('[name="' + inputName + '"]')
+        throwInput.value = inputValue
+        ReactTestUtils.Simulate.change(throwInput)
+    }
+
 
     function setupDOM() {
         domFixture = document.createElement('div')

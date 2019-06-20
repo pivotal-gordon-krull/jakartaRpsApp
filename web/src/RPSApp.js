@@ -6,8 +6,12 @@ export default class RPSApp extends React.Component {
         this.state = {}
     }
 
+    inputChanged(event) {
+        this.setState({[event.target.name]: event.target.value})
+    }
+
     submitHandler() {
-        this.props.match.play('p1 throw placeholder', 'p2 throw placeholder', this)
+        this.props.match.play(this.state.p1Throw, this.state.p2Throw, this)
     }
 
     player1Wins() {
@@ -22,7 +26,7 @@ export default class RPSApp extends React.Component {
         this.setState({result: 'DRAW!'})
     }
 
-    invalidInput() {
+    invalid() {
         this.setState({result: 'INVALID!'})
     }
 
@@ -30,6 +34,8 @@ export default class RPSApp extends React.Component {
         return (
             <div>
                 {this.state.result}
+                <input name="p1Throw" onChange={this.inputChanged.bind(this)}/>
+                <input name="p2Throw" onChange={this.inputChanged.bind(this)}/>
                 <button onClick={this.submitHandler.bind(this)}>PLAY</button>
             </div>
         )
