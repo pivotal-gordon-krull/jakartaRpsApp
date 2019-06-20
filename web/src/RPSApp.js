@@ -8,7 +8,6 @@ export default class RPSApp extends React.Component {
 
     submitHandler() {
         this.setState({
-
             result: 'INVALID!'
         })
     }
