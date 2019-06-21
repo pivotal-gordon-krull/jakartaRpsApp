@@ -1,30 +1,30 @@
 function Match() {
-    this.playMatch = (player1Throw, player2Throw, result, repo) => {
-        new PlayMatchRequest(player1Throw, player2Throw, result, repo).process()
+    this.playMatch = (player1Throw, player2Throw, observer, repo) => {
+        new PlayMatchRequest(player1Throw, player2Throw, observer, repo).process()
     }
 
-    this.getHistory = function(result, repo) {
+    this.getHistory = function(observer, repo) {
         if (repo.isEmpty()) {
-            result.noMatches()
+            observer.noMatches()
         } else {
-            result.matches(repo.getAll())
+            observer.matches(repo.getAll())
         }
     }
 }
 
-function PlayMatchRequest(player1Throw, player2Throw, result, repo) {
+function PlayMatchRequest(player1Throw, player2Throw, observer, repo) {
     this.process = () => {
         if (invalid(player1Throw) || invalid(player2Throw)) {
-            result.invalid()
+            observer.invalid()
             repo.save(new MatchResult(player1Throw, player2Throw, 'invalid'))
         } else if (draw()) {
-            result.draw()
+            observer.draw()
             repo.save(new MatchResult(player1Throw, player2Throw, 'draw'))
         } else if (player1WinsScenarios()) {
-            result.player1Wins()
+            observer.player1Wins()
             repo.save(new MatchResult(player1Throw, player2Throw, 'p1_wins'))
         } else {
-            result.player2Wins()
+            observer.player2Wins()
             repo.save(new MatchResult(player1Throw, player2Throw, 'p2_wins'))
         }
     }
