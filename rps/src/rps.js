@@ -3,8 +3,12 @@ function Match() {
         new PlayMatchRequest(player1Throw, player2Throw, result, repo).process()
     }
 
-    this.getHistory = function(result) {
-        result.noMatches()
+    this.getHistory = function(result, repo) {
+        if (repo.isEmpty()) {
+            result.noMatches()
+        } else {
+            result.matches(repo.getAll())
+        }
     }
 }
 
