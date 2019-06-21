@@ -11,10 +11,13 @@ function PlayMatchRequest(player1Throw, player2Throw, result, repo) {
             repo.save(new MatchResult(player1Throw, player2Throw, 'invalid'))
         } else if (draw()) {
             result.draw()
+            repo.save(new MatchResult(player1Throw, player2Throw, 'draw'))
         } else if (player1WinsScenarios()) {
             result.player1Wins()
+            repo.save(new MatchResult(player1Throw, player2Throw, 'p1_wins'))
         } else {
             result.player2Wins()
+            repo.save(new MatchResult(player1Throw, player2Throw, 'p2_wins'))
         }
     }
 
