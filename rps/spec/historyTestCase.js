@@ -1,6 +1,35 @@
 const {Match, MatchResult} = require('../src/rps')
 
 describe('history', () => {
+    describe('no one has played', function () {
+        it('tells the result that there are no matches', function () {
+            let result = jasmine.createSpyObj('match', ['noMatches'])
+
+            new Match().getHistory(result)
+
+            expect(result.noMatches).toHaveBeenCalled()
+        })
+    })
+
+    describe('returning matches', function () {
+        it('returns all game results to the observer', function () {
+            let result = jasmine.createSpyObj('match', ['matches'])
+
+            let stubRepo = {
+                isEmpty() { return false },
+                getAll() { return new MatchResult('rock', 'sailboat', 'invalid')}
+            }
+
+            new Match().getHistory(result, stubRepo)
+
+            expect(result.matches).toHaveBeenCalledWith(
+                new MatchResult('rock', 'sailboat', 'invalid')
+            )
+
+        })
+    })
+        
+    
     it('should save the game result after a game has been played and is invalid', function () {
         let spyRepo = jasmine.createSpyObj('repo', ['save']);
 

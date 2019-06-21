@@ -2,6 +2,10 @@ function Match() {
     this.playMatch = (player1Throw, player2Throw, result, repo) => {
         new PlayMatchRequest(player1Throw, player2Throw, result, repo).process()
     }
+
+    this.getHistory = function(result) {
+        result.noMatches()
+    }
 }
 
 function PlayMatchRequest(player1Throw, player2Throw, result, repo) {
@@ -44,7 +48,11 @@ function PlayMatchRequest(player1Throw, player2Throw, result, repo) {
     const VALID_THROWS = [THROW.ROCK, THROW.SCISSORS, THROW.PAPER]
 }
 
-function MatchResult(player1Throw, player2Throw, result) {}
+function MatchResult(player1Throw, player2Throw, result) {
+    this.player1Throw = player1Throw
+    this.player2Throw = player2Throw
+    this.result = result
+}
 
 module.exports = {Match, MatchResult}
 
