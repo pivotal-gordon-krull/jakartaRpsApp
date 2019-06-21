@@ -1,33 +1,37 @@
 const {FakeRepo} = require('../src/FakeRepo')
 const {MatchResult} = require('../src/rps')
 
-describe('FakeRepo', function () {
-    let repo;
+fakeRepoContract(FakeRepo)
 
-    beforeEach(() => {
-        repo = new FakeRepo()
-    })
+function fakeRepoContract(Repo) {
+    describe('FakeRepo', function () {
+        let repo
 
-    describe('when no matches have been saved', function () {
-        it('is empty', function () {
-            expect(repo.isEmpty()).toBe(true)
-        })
-    })
-
-    describe('when matches have been saved', function () {
-        it('is not empty', function () {
-            repo.save(new MatchResult())
-
-            expect(repo.isEmpty()).toBe(false)
+        beforeEach(() => {
+            repo = new Repo
         })
 
-        it('returns saved matches ', function () {
-            let matchResult = new MatchResult()
-
-            repo.save(matchResult)
-
-            expect(repo.getAll()).toEqual([matchResult])
+        describe('when no matches have been saved', function () {
+            it('is empty', function () {
+                expect(repo.isEmpty()).toBe(true)
+            })
         })
-    })
 
-})
+        describe('when matches have been saved', function () {
+            it('is not empty', function () {
+                repo.save(new MatchResult())
+
+                expect(repo.isEmpty()).toBe(false)
+            })
+
+            it('returns saved matches ', function () {
+                let matchResult = new MatchResult()
+
+                repo.save(matchResult)
+
+                expect(repo.getAll()).toEqual([matchResult])
+            })
+        })
+
+    })
+}

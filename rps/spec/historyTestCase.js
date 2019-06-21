@@ -1,6 +1,21 @@
 const {Match, MatchResult} = require('../src/rps')
+const {FakeRepo} = require('../src/FakeRepo')
 
 describe('history', () => {
+
+    it('returns saved matches after playing an invalid game', function () {
+        let match = new Match();
+        let fakeRepo = new FakeRepo()
+        let observer = {invalid() {}}
+
+        match.playMatch('rock', 'sailboat', observer, fakeRepo)
+
+        let historyObserver = jasmine.createSpyObj('observer', ['matches'])
+        match.getHistory(historyObserver, fakeRepo)
+
+        expect(historyObserver.matches).toHaveBeenCalledWith([new MatchResult('rock', 'sailboat', 'invalid')])
+    })
+
     describe('no one has played', function () {
         it('tells the observer that there are no matches', function () {
             let observer = jasmine.createSpyObj('observer', ['noMatches'])
