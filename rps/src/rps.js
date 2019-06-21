@@ -1,13 +1,14 @@
 function Match() {
-    this.playMatch = (player1Throw, player2Throw, result) => {
-        new PlayMatchRequest(player1Throw, player2Throw, result).process()
+    this.playMatch = (player1Throw, player2Throw, result, repo) => {
+        new PlayMatchRequest(player1Throw, player2Throw, result, repo).process()
     }
 }
 
-function PlayMatchRequest(player1Throw, player2Throw, result) {
+function PlayMatchRequest(player1Throw, player2Throw, result, repo) {
     this.process = () => {
         if (invalid(player1Throw) || invalid(player2Throw)) {
             result.invalid()
+            repo.save(new MatchResult(player1Throw, player2Throw, 'invalid'))
         } else if (draw()) {
             result.draw()
         } else if (player1WinsScenarios()) {
@@ -40,4 +41,8 @@ function PlayMatchRequest(player1Throw, player2Throw, result) {
     const VALID_THROWS = [THROW.ROCK, THROW.SCISSORS, THROW.PAPER]
 }
 
-module.exports = {Match}
+function MatchResult(player1Throw, player2Throw, result) {}
+
+module.exports = {Match, MatchResult}
+
+

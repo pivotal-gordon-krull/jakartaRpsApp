@@ -1,12 +1,23 @@
-const {Match} = require('../src/rps')
+const {Match, MatchResult} = require('../src/rps')
 
 
 describe('play', () => {
-    let match, result;
+    let match, result, spyRepo;
 
     beforeEach(() => {
         match = new Match();
+        spyRepo = jasmine.createSpyObj('repo', ['save'])
     });
+
+    it('saves a game result after a game has been played', () => {
+        let playMatchResult = {invalid() {}}
+
+        new Match().playMatch('rock', 'sailboat', playMatchResult, spyRepo)
+
+        expect(spyRepo.save).toHaveBeenCalledWith(
+            new MatchResult('rock', 'sailboat', 'invalid')
+        )
+    })
 
     describe('player 1 wins scenarios', () => {
         beforeEach(() => {
@@ -87,21 +98,22 @@ describe('play', () => {
         });
 
         it('invalid vs rock', function () {
-            match.playMatch('invalid', 'rock', result);
+            match.playMatch('invalid', 'rock', result, spyRepo);
 
             expect(result.invalid).toHaveBeenCalled();
         });
 
         it('rock vs invalid', function () {
-            match.playMatch('rock', 'invalid', result);
+            match.playMatch('rock', 'invalid', result, spyRepo);
 
             expect(result.invalid).toHaveBeenCalled();
         });
 
         it('invalid vs invalid', function () {
-            match.playMatch('invalid', 'invalid', result);
+            match.playMatch('invalid', 'invalid', result, spyRepo);
 
             expect(result.invalid).toHaveBeenCalled();
         });
     });
 });
+
